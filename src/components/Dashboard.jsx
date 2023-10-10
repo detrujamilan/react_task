@@ -36,22 +36,36 @@ const Dashboard = () => {
 
   const columns = [
     columnHelper.accessor("firstName", {
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <Typography sx={{ width: "10rem" }}>{info.getValue()}</Typography>
+      ),
     }),
     columnHelper.accessor("lastName", {
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <Typography sx={{ width: "10rem" }}>{info.getValue()}</Typography>
+      ),
     }),
     columnHelper.accessor("mobile", {
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <Typography sx={{ width: "10rem" }}>{info.getValue()}</Typography>
+      ),
     }),
-    columnHelper.accessor("DOB", {
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("gmail", {
-      cell: (info) => info.getValue(),
+    columnHelper.accessor("email", {
+      cell: (info) => (
+        <Typography sx={{ width: "15rem" }}>{info.getValue()}</Typography>
+      ),
     }),
     columnHelper.accessor("password", {
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <Typography sx={{ width: "10rem", overflow: "hidden" }}>
+          {info.getValue()}
+        </Typography>
+      ),
+    }),
+    columnHelper.accessor("DOB", {
+      cell: (info) => (
+        <Typography sx={{ width: "10rem" }}>{info.getValue()}</Typography>
+      ),
     }),
   ];
 
@@ -76,13 +90,13 @@ const Dashboard = () => {
   if (error) {
     return <Typography>Error: {error.message}</Typography>;
   }
-  const UserName = localStorage.getItem("firstName");
+
   const queryClient = useQueryClient();
 
   const handleSaveClick = (id) => {
     axios
       .patch(
-        `http://localhost:3005/api/user/update`,
+        `${import.meta.env.VITE_REACT_APP_API_URL}update`,
         {
           id: id,
           firstName: editedValue,
@@ -97,8 +111,9 @@ const Dashboard = () => {
         if (response.status === 200) {
           toast.success("User updated successfully");
         }
-        queryClient.invalidateQueries("allUser");
+        localStorage.setItem("firstName", editedValue);
         setEditingCell(null);
+        queryClient.invalidateQueries("allUser");
         setEditedValue("");
         setToggleEditing(false);
       })
@@ -110,7 +125,6 @@ const Dashboard = () => {
   return (
     <>
       <ToastContainer />
-      <Header userName={UserName} />
       <Typography
         sx={{ my: 5, textAlign: "center", fontSize: 20, fontWeight: 600 }}
       >
@@ -157,53 +171,45 @@ const Dashboard = () => {
                       textAlign: "center",
                     }}
                     onClick={() => {
-                      if (cell.column.id === "firstName") {
+                      if (cell.column.id) {
                         if (!toggleEditing) {
-                          setEditedValue(cell.row.original.firstName);
+                          setEditedValue(cell.column.id);
                           setEditingCell(cell.id);
                           setToggleEditing(true);
                         }
                       }
                     }}
                   >
-                    {cell.column.id === "firstName" ? (
-                      !toggleEditing || cell.id !== editingCell ? (
-                        flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )
-                      ) : (
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <TextField
-                            type="text"
-                            value={editedValue}
-                            sx={{ width: "10rem" }}
-                            onChange={(e) => {
-                              setEditedValue(e.target.value);
-                            }}
-                          />
-                          <IconButton
-                            onClick={() =>
-                              handleSaveClick(cell.row.original._id)
-                            }
-                          >
-                            <ModeEdit
-                              size="large"
-                              edge="start"
-                              color="inherit"
-                              aria-label="menu"
-                              sx={{ mr: 2 }}
-                            />
-                          </IconButton>
-                        </Box>
-                      )
-                    ) : (
+                    {console.log(cell.row.original)}
+                    {!toggleEditing || cell.id !== editingCell ? (
                       flexRender(cell.column.columnDef.cell, cell.getContext())
+                    ) : (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <TextField
+                          type="text"
+                          value={editedValue}
+                          sx={{ width: "10rem" }}
+                          onChange={(e) => {
+                            setEditedValue(e.target.value);
+                          }}
+                        />
+                        <IconButton
+                          onClick={() => handleSaveClick(cell.row.id)}
+                        >
+                          <ModeEdit
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            sx={{ mr: 2 }}
+                          />
+                        </IconButton>
+                      </Box>
                     )}
                   </td>
                 ))}

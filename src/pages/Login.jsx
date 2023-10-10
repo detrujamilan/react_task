@@ -8,7 +8,7 @@ import {
   Typography,
   Container,
 } from "@mui/material";
-import { Link, json } from "react-router-dom";
+import { Link, json, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -22,7 +22,7 @@ const LoginData = async (data) => {
     },
   };
   const response = await axios.post(
-    "http://localhost:3005/api/user/login",
+    `${import.meta.env.VITE_REACT_APP_API_URL}login`,
     data,
     config
   );
@@ -33,6 +33,7 @@ const LoginData = async (data) => {
 };
 
 const Login = () => {
+  const navigate = useNavigate();
   const from = useForm({
     email: "",
     password: "",
@@ -83,6 +84,7 @@ const Login = () => {
               name="email"
               label="Email"
               {...register("email", {
+                required: " Email is required",
                 pattern: {
                   value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                   message: "Plz enter valid email address",
@@ -103,14 +105,15 @@ const Login = () => {
                 },
               })}
             />
+            <Box sx={{ color: "red" }}> {errors.email?.message} </Box>
           </Box>
-          <Box sx={{ color: "red" }}> {errors.email?.message} </Box>
           <Box sx={{ width: "100%" }}>
             <TextField
               margin="normal"
               sx={{ width: "100%" }}
               label="Password"
               name="password"
+              type="password"
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -140,7 +143,7 @@ const Login = () => {
             cursor: "pointer",
           }}
           onClick={() => {
-            window.location.href = "/signup";
+            navigate("/signUp");
           }}
         >
           <Box sx={{ textAlign: "center" }}>Create New Register</Box>

@@ -5,6 +5,7 @@ import {
   Box,
   Container,
   FormControl,
+  Typography,
 } from "@mui/material";
 import axios from "axios";
 import * as React from "react";
@@ -21,7 +22,7 @@ const signUpData = async (data) => {
     },
   };
   const response = await axios.post(
-    "http://localhost:3005/api/user/signup",
+    `${import.meta.env.VITE_REACT_APP_API_URL}signup`,
     data,
     config
   );
@@ -40,7 +41,7 @@ const SignUp = () => {
       lastName: "",
       email: "",
       password: "",
-      mobile: "",
+      mobile: 0,
       DOB: new Date(),
     },
   });
@@ -76,21 +77,34 @@ const SignUp = () => {
     mutate(JSON.stringify(formValue), reset());
   };
 
+  const validateDOB = (value) => {
+    const selectedDate = new Date(value);
+    const today = new Date();
+    return (
+      selectedDate < today || "Date of birth cannot be today or in the future"
+    );
+  };
+
   return (
     <>
       <ToastContainer />
       <CssBaseline />
       <Container component="main" maxWidth="xs">
-        <Box sx={{ my: 3 }} component="form" noValidate>
-          <Box sx={{ textAlign: "center" }}>SignUp</Box>
+        <Box sx={{ my: 5 }} component="form" noValidate>
+          <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
+            Sign Up
+          </Typography>
           <Box sx={{ width: "100%" }}>
             <TextField
               sx={{ width: "100%" }}
               margin="normal"
               label="first Name"
               name="firstName"
-              {...register("firstName")}
+              {...register("firstName", {
+                required: "firstName is required",
+              })}
             />
+            <Box sx={{ color: "red" }}>{errors.firstName?.message}</Box>
           </Box>
           <Box sx={{ width: "100%" }}>
             <TextField
@@ -98,8 +112,11 @@ const SignUp = () => {
               margin="normal"
               label="last Name"
               name="lastName"
-              {...register("lastName")}
+              {...register("lastName", {
+                required: "lastName is required",
+              })}
             />
+            <Box sx={{ color: "red" }}>{errors.lastName?.message}</Box>
           </Box>
           <Box sx={{ width: "100%" }}>
             <TextField
@@ -108,6 +125,7 @@ const SignUp = () => {
               label="Email"
               name="email"
               {...register("email", {
+                required: "Email is required",
                 pattern: {
                   value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                   message: "plz enter valid email",
@@ -146,7 +164,7 @@ const SignUp = () => {
             <TextField
               sx={{ width: "100%" }}
               margin="normal"
-              type="text"
+              type="number"
               label="mobile"
               name="mobile"
               {...register("mobile", {
@@ -170,8 +188,12 @@ const SignUp = () => {
               margin="normal"
               type="date"
               name="DOB"
-              {...register("DOB")}
+              {...register("DOB", {
+                required: "Date of birth cannot be today or in the Future",
+                validate: validateDOB,
+              })}
             />
+            <Box sx={{ color: "red" }}> {errors.DOB?.message} </Box>
           </Box>
           <Box
             sx={{
@@ -180,6 +202,7 @@ const SignUp = () => {
               justifyContent: "center",
               alignItems: "center",
               gap: 2,
+              mt: 3,
             }}
           >
             <Button
