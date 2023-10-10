@@ -79,6 +79,7 @@ const Login = () => {
           </Typography>
           <Box component="form" noValidate sx={{ width: "100%" }}>
             <TextField
+              required
               sx={{ width: "100%" }}
               margin="normal"
               name="email"
@@ -109,9 +110,11 @@ const Login = () => {
           </Box>
           <Box sx={{ width: "100%" }}>
             <TextField
+              required
               margin="normal"
               sx={{ width: "100%" }}
               label="Password"
+              autoComplete="current-password"
               name="password"
               type="password"
               {...register("password", {
@@ -130,23 +133,29 @@ const Login = () => {
             />
             <Box sx={{ color: "red" }}> {errors.password?.message} </Box>
           </Box>
-          <Box sx={{ mt: 1 }}>
-            <Button variant="contained" onClick={handleSubmit(submit)}>
-              Login
-            </Button>
-          </Box>
+          <Button
+            sx={{ width: "100%", mt: 2 }}
+            variant="contained"
+            onClick={handleSubmit(submit)}
+          >
+            Login
+          </Button>
         </Box>
         <Box
           sx={{
-            mt: 2,
+            mt: 3,
+            display: "flex",
             justifyContent: "center",
-            cursor: "pointer",
-          }}
-          onClick={() => {
-            navigate("/signUp");
           }}
         >
-          <Box sx={{ textAlign: "center" }}>Create New Register</Box>
+          <Box
+            sx={{ color: "#00A8E6", cursor: "pointer" }}
+            onClick={() => {
+              navigate("/signUp");
+            }}
+          >
+            Don't have an account? Sign Up
+          </Box>
         </Box>
       </Container>
       <DevTool control={control} />

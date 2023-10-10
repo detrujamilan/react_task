@@ -41,7 +41,7 @@ const SignUp = () => {
       lastName: "",
       email: "",
       password: "",
-      mobile: 0,
+      mobile: "",
       DOB: new Date(),
     },
   });
@@ -88,149 +88,153 @@ const SignUp = () => {
   return (
     <>
       <ToastContainer />
-      <CssBaseline />
-      <Container component="main" maxWidth="xs">
-        <Box sx={{ my: 5 }} component="form" noValidate>
-          <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
-            Sign Up
-          </Typography>
-          <Box sx={{ width: "100%" }}>
-            <TextField
-              sx={{ width: "100%" }}
-              margin="normal"
-              label="first Name"
-              name="firstName"
-              {...register("firstName", {
-                required: "firstName is required",
-              })}
-            />
-            <Box sx={{ color: "red" }}>{errors.firstName?.message}</Box>
-          </Box>
-          <Box sx={{ width: "100%" }}>
-            <TextField
-              sx={{ width: "100%" }}
-              margin="normal"
-              label="last Name"
-              name="lastName"
-              {...register("lastName", {
-                required: "lastName is required",
-              })}
-            />
-            <Box sx={{ color: "red" }}>{errors.lastName?.message}</Box>
-          </Box>
-          <Box sx={{ width: "100%" }}>
-            <TextField
-              sx={{ width: "100%" }}
-              margin="normal"
-              label="Email"
-              name="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "plz enter valid email",
-                },
-                validate: {
-                  notAdmin: (fieldValue) => {
-                    return (
-                      fieldValue !== "milan123@gmail.com" ||
-                      "Please enter different email address"
-                    );
+      <Box sx={{ py: 6 }}>
+        <Container component="main" maxWidth="xs">
+          <Box component="form" noValidate>
+            <Typography
+              component="h1"
+              variant="h5"
+              sx={{ textAlign: "center" }}
+            >
+              Sign Up
+            </Typography>
+            <Box sx={{ width: "100%" }}>
+              <TextField
+                required
+                sx={{ width: "100%" }}
+                margin="normal"
+                label="First Name"
+                name="firstName"
+                {...register("firstName", {
+                  required: "firstName is required",
+                })}
+              />
+              <Box sx={{ color: "red" }}>{errors.firstName?.message}</Box>
+            </Box>
+            <Box sx={{ width: "100%" }}>
+              <TextField
+                required
+                sx={{ width: "100%" }}
+                margin="normal"
+                label="Last Name"
+                name="lastName"
+                {...register("lastName", {
+                  required: "lastName is required",
+                })}
+              />
+              <Box sx={{ color: "red" }}>{errors.lastName?.message}</Box>
+            </Box>
+            <Box sx={{ width: "100%" }}>
+              <TextField
+                required
+                sx={{ width: "100%" }}
+                margin="normal"
+                label="Email Address"
+                name="email"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    message: "plz enter valid email",
                   },
-                  notBlackListed: (fieldValue) => {
-                    return (
-                      !fieldValue.endsWith("baddomain.com") ||
-                      "this domain is blacklisted"
-                    );
+                  validate: {
+                    notAdmin: (fieldValue) => {
+                      return (
+                        fieldValue !== "milan123@gmail.com" ||
+                        "Please enter different email address"
+                      );
+                    },
+                    notBlackListed: (fieldValue) => {
+                      return (
+                        !fieldValue.endsWith("baddomain.com") ||
+                        "this domain is blacklisted"
+                      );
+                    },
                   },
-                },
-              })}
-            />
-            <Box sx={{ color: "red" }}> {errors.email?.message} </Box>
-          </Box>
-          <Box sx={{ width: "100%" }}>
-            <TextField
-              sx={{ width: "100%" }}
-              margin="normal"
-              label="Password"
-              name="password"
-              {...register("password", {
-                required: "Password Is Required",
-              })}
-            />
-            <Box sx={{ color: "red" }}> {errors.password?.message} </Box>
-          </Box>
-          <Box sx={{ width: "100%" }}>
-            <TextField
-              sx={{ width: "100%" }}
-              margin="normal"
-              type="number"
-              label="mobile"
-              name="mobile"
-              {...register("mobile", {
-                required: "Mobile is required",
-                minLength: {
-                  value: 10,
-                  message: "Mobile must be exactly 10 digits",
-                },
-                pattern: {
-                  value: /^[0-9]*$/,
-                  message: "Mobile must contain only numeric digits",
-                },
-              })}
-            />
-          </Box>
+                })}
+              />
+              <Box sx={{ color: "red" }}> {errors.email?.message} </Box>
+            </Box>
+            <Box sx={{ width: "100%" }}>
+              <TextField
+                required
+                sx={{ width: "100%" }}
+                margin="normal"
+                label="Password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                {...register("password", {
+                  required: "Password Is Required",
+                })}
+              />
+              <Box sx={{ color: "red" }}> {errors.password?.message} </Box>
+            </Box>
+            <Box sx={{ width: "100%" }}>
+              <TextField
+                required
+                sx={{ width: "100%" }}
+                margin="normal"
+                type="text"
+                label="Mobile"
+                name="mobile"
+                {...register("mobile", {
+                  required: "Mobile is required",
+                  minLength: {
+                    value: 10,
+                    message: "Mobile must be exactly 10 digits",
+                  },
+                  pattern: {
+                    value: /^[0-9]*$/,
+                    message: "Mobile must contain only numeric digits",
+                  },
+                })}
+              />
+            </Box>
 
-          <Box sx={{ color: "red" }}>{errors.mobile?.message}</Box>
-          <Box sx={{ width: "100%" }}>
-            <TextField
-              sx={{ width: "100%" }}
-              margin="normal"
-              type="date"
-              name="DOB"
-              {...register("DOB", {
-                required: "Date of birth cannot be today or in the Future",
-                validate: validateDOB,
-              })}
-            />
-            <Box sx={{ color: "red" }}> {errors.DOB?.message} </Box>
-          </Box>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 2,
-              mt: 3,
-            }}
-          >
+            <Box sx={{ color: "red" }}>{errors.mobile?.message}</Box>
+            <Box sx={{ width: "100%" }}>
+              <TextField
+                sx={{ width: "100%" }}
+                margin="normal"
+                type="date"
+                name="DOB"
+                {...register("DOB", {
+                  required: "Date of birth cannot be today or in the Future",
+                  validate: validateDOB,
+                })}
+              />
+              <Box sx={{ color: "red" }}> {errors.DOB?.message} </Box>
+            </Box>
+
             <Button
               sx={{
-                width: "50%",
+                width: "100%",
                 mt: 1,
               }}
               color="success"
               variant="contained"
               onClick={handleSubmit(submit)}
             >
-              submit
+              SIGN UP
             </Button>
-            <Button
+            <Box
               sx={{
-                width: "50%",
-                mt: 1,
+                mt: 2,
+                textAlign: "end",
+                textDecoration: "underline",
+                color: "#00A8E6",
+                fontSize: "15px",
               }}
-              variant="contained"
               onClick={() => {
                 window.location.href = "/";
               }}
             >
-              Login
-            </Button>
+              Already have an account? Sign in
+            </Box>
           </Box>
-        </Box>
-      </Container>
+        </Container>
+      </Box>
       <DevTool control={control} />
     </>
   );
