@@ -180,7 +180,6 @@ const Dashboard = () => {
                       }
                     }}
                   >
-                    {console.log(cell.row.original)}
                     {!toggleEditing || cell.id !== editingCell ? (
                       flexRender(cell.column.columnDef.cell, cell.getContext())
                     ) : (

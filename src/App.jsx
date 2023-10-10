@@ -4,7 +4,13 @@ import SignUp from "./pages/SignUp";
 import Dashboard from "./components/Dashboard";
 import Header from "./components/Header";
 import Index from "../zustand/Index";
-import { Box, IconButton, ThemeProvider, createTheme } from "@mui/material";
+import {
+  Box,
+  CssBaseline,
+  IconButton,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import { useEffect } from "react";
 
 function App() {
@@ -12,11 +18,24 @@ function App() {
   const darkMode = Index((state) => state.darkMode);
   const navigate = useNavigate();
 
-  const theme = createTheme({
+  const darkTheme = createTheme({
     palette: {
-      mode: darkMode ? "dark" : "light",
+      type: "dark",
+      background: {
+        default: "hsl(200, 17%, 14%)",
+      },
     },
   });
+
+  const lightTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#2196F3",
+      },
+    },
+  });
+
+  const selectedTheme = darkMode === "dark" ? darkTheme : lightTheme;
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -24,18 +43,17 @@ function App() {
     } else {
       navigate("/");
     }
-  });
-  
+  }, []);
+
   return (
     <>
       <Box
         sx={{
-          backgroundColor: darkMode ? "#000000" : "#ffffff",
           height: "100vh",
-          color: darkMode ? "" : "#ffffff #000000",
         }}
       >
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={selectedTheme}>
+          <CssBaseline />
           {window.location.pathname !== "/" &&
             window.location.pathname !== "/signUp" && <Header />}
           <Routes>
