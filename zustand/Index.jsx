@@ -7,10 +7,10 @@ const useStore = create((set) => ({
   setEditingCell: (cell) => set({ editingCell: cell }),
   setToggleEditing: (toggle) => set({ toggleEditing: toggle }),
   setEditedValue: (editedValue) => set({ editedValue }),
-  selectedDate: '',
+  selectedDate: "",
   setSelectedDate: (date) => set({ selectedDate: date }),
-  darkMode: true,
-  toggleDarkMode: () => set(state => ({ darkMode: !state.darkMode })),
+  darkMode: false,
+  toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
 }));
 
 export default useStore;
