@@ -9,7 +9,7 @@ const useStore = create((set) => ({
   setEditedValue: (editedValue) => set({ editedValue }),
   selectedDate: "",
   setSelectedDate: (date) => set({ selectedDate: date }),
-  darkMode: false,
+  darkMode: true, 
   toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
 }));
 

@@ -27,6 +27,7 @@ const LoginData = async (data) => {
     config
   );
   if (response.status === 200) {
+    toast.success("Successfully logged in");
     window.location.href = "/dashboard";
   }
   return response.data;
@@ -64,7 +65,6 @@ const Login = () => {
   return (
     <>
       <ToastContainer />
-      <CssBaseline />
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -148,14 +148,14 @@ const Login = () => {
             justifyContent: "center",
           }}
         >
-          <Box
+          <Typography
             sx={{ color: "#00A8E6", cursor: "pointer" }}
             onClick={() => {
               navigate("/signUp");
             }}
           >
-            Don't have an account? Sign Up
-          </Box>
+            <Box>Don't have an account? Sign Up</Box>
+          </Typography>
         </Box>
       </Container>
       <DevTool control={control} />

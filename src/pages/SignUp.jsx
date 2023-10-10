@@ -212,26 +212,29 @@ const SignUp = () => {
                 width: "100%",
                 mt: 1,
               }}
-              color="success"
+              color="primary"
               variant="contained"
               onClick={handleSubmit(submit)}
             >
               SIGN UP
             </Button>
-            <Box
-              sx={{
-                mt: 2,
-                textAlign: "end",
-                textDecoration: "underline",
-                color: "#00A8E6",
-                fontSize: "15px",
-              }}
-              onClick={() => {
-                window.location.href = "/";
-              }}
-            >
-              Already have an account? Sign in
-            </Box>
+            <Typography>
+              <Box
+                sx={{
+                  mt: 2,
+                  textAlign: "end",
+                  textDecoration: "underline",
+                  color: "#00A8E6",
+                  fontSize: "15px",
+                  cursor: "pointer ",
+                }}
+                onClick={() => {
+                  window.location.href = "/";
+                }}
+              >
+                Already have an account? Sign in
+              </Box>
+            </Typography>
           </Box>
         </Container>
       </Box>

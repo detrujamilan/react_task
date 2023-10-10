@@ -129,122 +129,122 @@ const Dashboard = () => {
   return (
     <>
       <ToastContainer />
-
-      {isLoading ? (
-        <Box
-          sx={{
-            px: 5,
-            width: "95%",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      ) : (
-        <>
-          <Typography
-            sx={{ my: 5, textAlign: "center", fontSize: 20, fontWeight: 600 }}
-          >
-            Login User Data
-          </Typography>
-          <Typography
+      <Box sx={{ pt: 15 }}>
+        {isLoading ? (
+          <Box
             sx={{
-              px: 5,
-              width: "95%",
               display: "flex",
               justifyContent: "center",
             }}
           >
-            <table style={{ width: "50%", borderCollapse: "collapse" }}>
-              <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        style={{
-                          border: "1px solid #ccc",
-                          padding: "8px",
-                          background: "#f2f2f2",
-                          fontWeight: "bold",
-                          textAlign: "center",
-                        }}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td
-                        key={cell.id}
-                        style={{
-                          border: "1px solid #ccc",
-                          padding: "8px",
-                          textAlign: "center",
-                        }}
-                        onClick={() => {
-                          if (cell.column.id) {
-                            if (!toggleEditing) {
-                              setEditedValue(cell.column.id);
-                              setEditingCell(cell.id);
-                              setToggleEditing(true);
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            <Typography
+              sx={{ my: 5, textAlign: "center", fontSize: 20, fontWeight: 600 }}
+            >
+              Login User Data
+            </Typography>
+            <Typography
+              sx={{
+                px: 5,
+                width: "95%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <table style={{ width: "50%", borderCollapse: "collapse" }}>
+                <thead>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <th
+                          key={header.id}
+                          style={{
+                            border: "1px solid #ccc",
+                            padding: "8px",
+                            background: "#f2f2f2",
+                            textAlign: "center",
+                            textTransform: "uppercase",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody>
+                  {table.getRowModel().rows.map((row) => (
+                    <tr key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          key={cell.id}
+                          style={{
+                            border: "1px solid #ccc",
+                            padding: "8px",
+                            textAlign: "center",
+                          }}
+                          onClick={() => {
+                            if (cell.column.id) {
+                              if (!toggleEditing) {
+                                setEditedValue(cell.column.id);
+                                setEditingCell(cell.id);
+                                setToggleEditing(true);
+                              }
                             }
-                          }
-                        }}
-                      >
-                        {!toggleEditing || cell.id !== editingCell ? (
-                          flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )
-                        ) : (
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <TextField
-                              type="text"
-                              value={editedValue}
-                              sx={{ width: "10rem" }}
-                              onChange={(e) => {
-                                setEditedValue(e.target.value);
+                          }}
+                        >
+                          {!toggleEditing || cell.id !== editingCell ? (
+                            flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )
+                          ) : (
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
                               }}
-                            />
-                            <IconButton
-                              onClick={() => handleSaveClick(cell.row.id)}
                             >
-                              <ModeEdit
-                                size="large"
-                                edge="start"
-                                color="inherit"
-                                aria-label="menu"
-                                sx={{ mr: 2 }}
+                              <TextField
+                                type="text"
+                                value={editedValue}
+                                sx={{ width: "10rem" }}
+                                onChange={(e) => {
+                                  setEditedValue(e.target.value);
+                                }}
                               />
-                            </IconButton>
-                          </Box>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Typography>
-        </>
-      )}
+                              <IconButton
+                                onClick={() => handleSaveClick(cell.row.id)}
+                              >
+                                <ModeEdit
+                                  size="large"
+                                  edge="start"
+                                  color="inherit"
+                                  aria-label="menu"
+                                  sx={{ mr: 2 }}
+                                />
+                              </IconButton>
+                            </Box>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Typography>
+          </>
+        )}
+      </Box>
     </>
   );
 };

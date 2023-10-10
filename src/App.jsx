@@ -5,37 +5,17 @@ import Dashboard from "./components/Dashboard";
 import Header from "./components/Header";
 import Index from "../zustand/Index";
 import {
-  Box,
   CssBaseline,
-  IconButton,
+  Paper,
+  Switch,
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const token = localStorage.getItem("token");
-  const darkMode = Index((state) => state.darkMode);
+  const { darkMode, toggleDarkMode } = Index();
   const navigate = useNavigate();
-
-  const darkTheme = createTheme({
-    palette: {
-      type: "dark",
-      background: {
-        default: "hsl(200, 17%, 14%)",
-      },
-    },
-  });
-
-  const lightTheme = createTheme({
-    palette: {
-      primary: {
-        main: "#2196F3",
-      },
-    },
-  });
-
-  const selectedTheme = darkMode === "dark" ? darkTheme : lightTheme;
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -45,28 +25,56 @@ function App() {
     }
   }, []);
 
+  // const theme = createTheme({
+  //   palette: {
+  //     mode:  darkMode ? "light" : "dark",
+  //   },
+
+  // });
+
+  const dark = createTheme({
+    palette: {
+      type: "dark",
+      background: {
+        paper: "#212121",
+      },
+      text: {
+        primary: "#FFFFFF",
+      },
+    },
+  });
+  const light = createTheme({
+    palette: {
+      type: "light",
+      background: {
+        paper: "#FFFFFF",
+      },
+      text: {
+        primary: "#00000",
+      },
+    },
+  });
+
   return (
     <>
-      <Box
-        sx={{
-          height: "100vh",
-        }}
-      >
-        <ThemeProvider theme={selectedTheme}>
-          <CssBaseline />
+      <ThemeProvider theme={darkMode ? dark : light}>
+        <Paper sx={{ height: "97vh" }}>
           {window.location.pathname !== "/" &&
-            window.location.pathname !== "/signUp" && <Header />}
-          <Routes>
-            {token ? (
-              <Route path="/" element={<Navigate to="/dashboard" />} />
-            ) : (
-              <Route path="/" element={<Login />} />
+            window.location.pathname !== "/signUp" && (
+              <Header
+                check={darkMode}
+                change={() => {
+                  toggleDarkMode();
+                }}
+              />
             )}
+          <Routes>
+            <Route path="/" element={<Login />} />
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
-        </ThemeProvider>
-      </Box>
+        </Paper>
+      </ThemeProvider>
     </>
   );
 }
