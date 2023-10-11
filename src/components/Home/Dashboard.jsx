@@ -21,7 +21,7 @@ import Index from "../../../Store/Index";
 
 const columnHelper = createColumnHelper();
 
-const Dashboard = () => {
+const Dashboard = ({ darkMode }) => {
   const { inputValue, setInputValue } = Index();
   const [data, setData] = React.useState([]);
   const token = localStorage.getItem("token");
@@ -149,7 +149,7 @@ const Dashboard = () => {
                           style={{
                             border: "1px solid #ccc",
                             padding: "8px",
-                            background: "#f2f2f2",
+                            background: darkMode && "#212121",
                             textAlign: "center",
                             textTransform: "uppercase",
                             fontSize: "14px",

@@ -71,7 +71,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/signUp" element={<SignUp />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard dark={darkMode} />} />
           </Routes>
         </Paper>
       </ThemeProvider>
