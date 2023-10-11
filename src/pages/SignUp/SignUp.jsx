@@ -13,7 +13,14 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { DevTool } from "@hookform/devtools";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import {
+  DOB_validation,
+  email_validation,
+  firstName_validation,
+  lastName_validation,
+  mobile_validation,
+  password_validation,
+} from "../../../utils/InputValidation";
 
 const signUpData = async (data) => {
   const config = {
@@ -30,7 +37,7 @@ const signUpData = async (data) => {
   if (response.status === 200) {
     debugger;
     localStorage.setItem("token", Usertoken);
-    toast.success("Successfully signed up", {
+    toast.success("Form has been submitted successfully", {
       autoClose: 5000,
     });
     window.location.href = "/dashboard";
@@ -78,6 +85,7 @@ const SignUp = () => {
 
   const submit = (formValue) => {
     localStorage.setItem("firstName", formValue.firstName);
+    setSuccess;
     mutate(JSON.stringify(formValue), reset());
   };
 
@@ -107,11 +115,10 @@ const SignUp = () => {
                 required
                 sx={{ width: "100%" }}
                 margin="normal"
-                label="First Name"
-                name="firstName"
-                {...register("firstName", {
-                  required: "FirstName is required",
-                })}
+                type={firstName_validation.type}
+                label={firstName_validation.label}
+                name={firstName_validation.name}
+                {...register("firstName", firstName_validation.validation)}
               />
               <Box sx={{ color: "red" }}>{errors.firstName?.message}</Box>
             </Box>
@@ -120,11 +127,10 @@ const SignUp = () => {
                 required
                 sx={{ width: "100%" }}
                 margin="normal"
-                label="Last Name"
-                name="lastName"
-                {...register("lastName", {
-                  required: "LastName is required",
-                })}
+                type={lastName_validation.type}
+                label={lastName_validation.label}
+                name={lastName_validation.name}
+                {...register("lastName", lastName_validation.validation)}
               />
               <Box sx={{ color: "red" }}>{errors.lastName?.message}</Box>
             </Box>
@@ -133,29 +139,10 @@ const SignUp = () => {
                 required
                 sx={{ width: "100%" }}
                 margin="normal"
-                label="Email Address"
-                name="email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                    message: "plz enter valid email",
-                  },
-                  validate: {
-                    notAdmin: (fieldValue) => {
-                      return (
-                        fieldValue !== "milan123@gmail.com" ||
-                        "Please enter different email address"
-                      );
-                    },
-                    notBlackListed: (fieldValue) => {
-                      return (
-                        !fieldValue.endsWith("baddomain.com") ||
-                        "this domain is blacklisted"
-                      );
-                    },
-                  },
-                })}
+                type={email_validation.type}
+                label={email_validation.label}
+                name={email_validation.name}
+                {...register("email", email_validation.validation)}
               />
               <Box sx={{ color: "red" }}> {errors.email?.message} </Box>
             </Box>
@@ -164,13 +151,11 @@ const SignUp = () => {
                 required
                 sx={{ width: "100%" }}
                 margin="normal"
-                label="Password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                {...register("password", {
-                  required: "Password Is Required",
-                })}
+                type={password_validation.type}
+                label={password_validation.label}
+                autoComplete={password_validation.autoComplete}
+                name={password_validation.name}
+                {...register("password", password_validation.validation)}
               />
               <Box sx={{ color: "red" }}> {errors.password?.message} </Box>
             </Box>
@@ -179,20 +164,10 @@ const SignUp = () => {
                 required
                 sx={{ width: "100%" }}
                 margin="normal"
-                type="text"
-                label="Mobile"
-                name="mobile"
-                {...register("mobile", {
-                  required: "Mobile is required",
-                  minLength: {
-                    value: 10,
-                    message: "Mobile must be exactly 10 digits",
-                  },
-                  pattern: {
-                    value: /^[0-9]{10}$/,
-                    message: "Mobile must contain only numeric digits",
-                  },
-                })}
+                type={mobile_validation.type}
+                label={mobile_validation.label}
+                name={mobile_validation.name}
+                {...register("mobile", mobile_validation.validation)}
               />
             </Box>
 
@@ -201,12 +176,9 @@ const SignUp = () => {
               <TextField
                 sx={{ width: "100%" }}
                 margin="normal"
-                type="date"
-                name="DOB"
-                {...register("DOB", {
-                  required: "Date of birth cannot be today or in the Future",
-                  validate: validateDOB,
-                })}
+                type={DOB_validation.type}
+                name={DOB_validation.name}
+                {...register(DOB_validation.name, DOB_validation.validation)}
               />
               <Box sx={{ color: "red" }}> {errors.DOB?.message} </Box>
             </Box>
@@ -240,6 +212,7 @@ const SignUp = () => {
           </Box>
         </Container>
       </Box>
+
       <DevTool control={control} />
     </>
   );

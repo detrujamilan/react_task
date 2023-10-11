@@ -6,12 +6,12 @@ import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 import Dashboard from "./components/Home/Dashboard";
 import Header from "./components/Header";
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 
 function App() {
   const { darkMode, toggleDarkMode } = Index();
   const navigate = useNavigate();
-  const token =localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -58,7 +58,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={darkMode ? light : dark}>
-        <Paper sx={{ height: "98vh" }}>
+        <Paper sx={{ height: "98.3vh" }}>
           {window.location.pathname !== "/" &&
             window.location.pathname !== "/signUp" && (
               <Header

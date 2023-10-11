@@ -11,6 +11,7 @@ const useStore = create((set) => ({
   toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
   inputValue: "",
   setInputValue: (newValue) => set({ inputValue: newValue }),
+  
 }));
 
 export default useStore;
