@@ -1,16 +1,16 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
-  editingCell: null,
   toggleEditing: false,
-  clickedCell: null,
-  setEditingCell: (cell) => set({ editingCell: cell }),
   setToggleEditing: (toggle) => set({ toggleEditing: toggle }),
-  setEditedValue: (editedValue) => set({ editedValue }),
+  editingCell: "",
+  setEditingCell: (cell) => set({ editingCell: cell }),
   selectedDate: "",
   setSelectedDate: (date) => set({ selectedDate: date }),
-  darkMode: true, 
+  darkMode: true,
   toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
+  inputValue: "",
+  setInputValue: (newValue) => set({ inputValue: newValue }),
 }));
 
 export default useStore;

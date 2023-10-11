@@ -28,7 +28,11 @@ const signUpData = async (data) => {
   );
   const Usertoken = response.data.token;
   if (response.status === 200) {
+    debugger;
     localStorage.setItem("token", Usertoken);
+    toast.success("Successfully signed up", {
+      autoClose: 5000,
+    });
     window.location.href = "/dashboard";
   }
   return response.data;
@@ -88,7 +92,7 @@ const SignUp = () => {
   return (
     <>
       <ToastContainer />
-      <Box sx={{ py: 6 }}>
+      <Box sx={{ pt: 10 }}>
         <Container component="main" maxWidth="xs">
           <Box component="form" noValidate>
             <Typography
@@ -106,7 +110,7 @@ const SignUp = () => {
                 label="First Name"
                 name="firstName"
                 {...register("firstName", {
-                  required: "firstName is required",
+                  required: "FirstName is required",
                 })}
               />
               <Box sx={{ color: "red" }}>{errors.firstName?.message}</Box>
@@ -119,7 +123,7 @@ const SignUp = () => {
                 label="Last Name"
                 name="lastName"
                 {...register("lastName", {
-                  required: "lastName is required",
+                  required: "LastName is required",
                 })}
               />
               <Box sx={{ color: "red" }}>{errors.lastName?.message}</Box>
@@ -185,7 +189,7 @@ const SignUp = () => {
                     message: "Mobile must be exactly 10 digits",
                   },
                   pattern: {
-                    value: /^[0-9]*$/,
+                    value: /^[0-9]{10}$/,
                     message: "Mobile must contain only numeric digits",
                   },
                 })}
@@ -218,23 +222,21 @@ const SignUp = () => {
             >
               SIGN UP
             </Button>
-            <Typography>
-              <Box
-                sx={{
-                  mt: 2,
-                  textAlign: "end",
-                  textDecoration: "underline",
-                  color: "#00A8E6",
-                  fontSize: "15px",
-                  cursor: "pointer ",
-                }}
-                onClick={() => {
-                  window.location.href = "/";
-                }}
-              >
-                Already have an account? Sign in
-              </Box>
-            </Typography>
+            <Box
+              sx={{
+                mt: 2,
+                textAlign: "end",
+                textDecoration: "underline",
+                color: "#00A8E6",
+                fontSize: "15px",
+                cursor: "pointer ",
+              }}
+              onClick={() => {
+                window.location.href = "/";
+              }}
+            >
+              Already have an account? Sign in
+            </Box>
           </Box>
         </Container>
       </Box>

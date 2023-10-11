@@ -25,12 +25,7 @@ const Header = ({ change, check }) => {
         >
           Log Out
         </Button>
-        <Switch
-          color="default"
-          defaultChecked
-          onClick={change}
-          checked={check}
-        />
+        <Switch color="default" onClick={change} checked={check} />
       </Toolbar>
     </AppBar>
   );

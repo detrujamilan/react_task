@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   CircularProgress,
   IconButton,
   TextField,
@@ -13,29 +12,17 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
-import { useNavigate } from "react-router-dom";
-import Header from "./Header";
-import useStore from "../../zustand/Index";
-import {
-  EditLocation,
-  EditNotifications,
-  MenuBook,
-  ModeEdit,
-} from "@mui/icons-material";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { useQuery, useQueryClient } from "react-query";
+import useStore from "../../../Store/Index";
+import { ModeEdit } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
+import Index from "../../../Store/Index";
 
 const columnHelper = createColumnHelper();
 
 const Dashboard = () => {
-  const [editedValue, setEditedValue] = useState("");
+  const { inputValue, setInputValue } = Index();
   const [data, setData] = React.useState([]);
   const token = localStorage.getItem("token");
   const { setEditingCell, toggleEditing, setToggleEditing, editingCell } =
@@ -103,7 +90,7 @@ const Dashboard = () => {
         `${import.meta.env.VITE_REACT_APP_API_URL}update`,
         {
           id: id,
-          firstName: editedValue,
+          firstName: inputValue,
         },
         {
           headers: {
@@ -115,11 +102,9 @@ const Dashboard = () => {
         if (response.status === 200) {
           toast.success("User updated successfully");
         }
-        localStorage.setItem("firstName", editedValue);
-        setEditingCell(null);
         queryClient.invalidateQueries("allUser");
-        setEditedValue("");
         setToggleEditing(false);
+        setInputValue("");
       })
       .catch((error) => {
         console.error("Error updating data:", error);
@@ -193,47 +178,55 @@ const Dashboard = () => {
                             textAlign: "center",
                           }}
                           onClick={() => {
-                            if (cell.column.id) {
+                            if (cell.column.id === "firstName") {
                               if (!toggleEditing) {
-                                setEditedValue(cell.column.id);
+                                setInputValue(cell.row.original.firstName);
                                 setEditingCell(cell.id);
                                 setToggleEditing(true);
                               }
                             }
                           }}
                         >
-                          {!toggleEditing || cell.id !== editingCell ? (
+                          {console.log(cell)}
+                          {cell.column.id === "firstName" ? (
+                            !toggleEditing || cell.id !== editingCell ? (
+                              flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )
+                            ) : (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <TextField
+                                  type="text"
+                                  value={inputValue}
+                                  sx={{ width: "10rem" }}
+                                  onChange={(e) => {
+                                    setInputValue(e.target.value);
+                                  }}
+                                />
+                                <IconButton
+                                  onClick={() => handleSaveClick(cell.id)}
+                                >
+                                  <ModeEdit
+                                    size="large"
+                                    edge="start"
+                                    color="inherit"
+                                    aria-label="menu"
+                                    sx={{ mr: 2 }}
+                                  />
+                                </IconButton>
+                              </Box>
+                            )
+                          ) : (
                             flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext()
                             )
-                          ) : (
-                            <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <TextField
-                                type="text"
-                                value={editedValue}
-                                sx={{ width: "10rem" }}
-                                onChange={(e) => {
-                                  setEditedValue(e.target.value);
-                                }}
-                              />
-                              <IconButton
-                                onClick={() => handleSaveClick(cell.row.id)}
-                              >
-                                <ModeEdit
-                                  size="large"
-                                  edge="start"
-                                  color="inherit"
-                                  aria-label="menu"
-                                  sx={{ mr: 2 }}
-                                />
-                              </IconButton>
-                            </Box>
                           )}
                         </td>
                       ))}
