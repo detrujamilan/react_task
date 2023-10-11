@@ -187,7 +187,6 @@ const Dashboard = ({ darkMode }) => {
                             }
                           }}
                         >
-                          {console.log(cell)}
                           {cell.column.id === "firstName" ? (
                             !toggleEditing || cell.id !== editingCell ? (
                               flexRender(
@@ -204,7 +203,7 @@ const Dashboard = ({ darkMode }) => {
                                 <TextField
                                   type="text"
                                   value={inputValue}
-                                  sx={{ width: "10rem" }}
+                                  sx={{ width: "10rem" }} 
                                   onChange={(e) => {
                                     setInputValue(e.target.value);
                                   }}

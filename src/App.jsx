@@ -7,11 +7,18 @@ import SignUp from "./pages/SignUp/SignUp";
 import Dashboard from "./components/Home/Dashboard";
 import Header from "./components/Header";
 import jwt_decode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 
 function App() {
   const { darkMode, toggleDarkMode } = Index();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
+  // function isTokenExpired() {
+  //   const decodedToken = jwtDecode(token);
+  //   const currentTime = Date.now() / 1000;
+  //   return decodedToken.exp < currentTime;
+  // }
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -20,17 +27,6 @@ function App() {
       navigate("/");
     }
   }, []);
-
-  // useEffect(() => {
-  //   const decodedToken = jwt_decode(token);
-  //   const expirationTimeInSeconds = decodedToken.exp;
-  //   const expirationTimeInMilliseconds = expirationTimeInSeconds * 1000;
-  //     const currentTime = Date.now();
-  //     if (currentTime > expirationTimeInMilliseconds) {
-  //       alert('Token has expired');
-  //     }
-  //   return () => clearTimeout(timer);
-  // }, [token]);
 
   const dark = createTheme({
     palette: {

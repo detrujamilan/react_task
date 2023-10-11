@@ -35,7 +35,6 @@ const signUpData = async (data) => {
   );
   const Usertoken = response.data.token;
   if (response.status === 200) {
-    debugger;
     localStorage.setItem("token", Usertoken);
     toast.success("Form has been submitted successfully", {
       autoClose: 5000,
@@ -85,7 +84,6 @@ const SignUp = () => {
 
   const submit = (formValue) => {
     localStorage.setItem("firstName", formValue.firstName);
-    setSuccess;
     mutate(JSON.stringify(formValue), reset());
   };
 
@@ -194,7 +192,7 @@ const SignUp = () => {
             >
               SIGN UP
             </Button>
-            <Box
+            <Typography
               sx={{
                 mt: 2,
                 textAlign: "end",
@@ -208,7 +206,7 @@ const SignUp = () => {
               }}
             >
               Already have an account? Sign in
-            </Box>
+            </Typography>
           </Box>
         </Container>
       </Box>
